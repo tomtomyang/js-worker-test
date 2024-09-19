@@ -1,0 +1,17 @@
+{
+  "name": "js-worker-test",
+  "version": "1.0.0",
+  "description": "",
+  "author": "tomtomyang@tencent.com",
+  "main": "./src/index.js",
+  "scripts": {
+    "jest": "jest --coverage"
+  },
+  "keywords": [],
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
