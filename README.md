@@ -33,15 +33,12 @@ addEventListener("fetch", (event) => {
 
 ```js
 // worker.test.js
+const path = require('path');
 const { setupWorkerTest, clearWorkerTest, triggerFetchEvent } = require('../src');
 
 describe('worker test', () => {
-  let addEventListenerMock;
-
   beforeAll(() => {
-    addEventListenerMock = setupWorkerTest();
-
-    require('./worker.js');
+    setupWorkerTest(path.resolve(__dirname, './worker.js'));
   });
 
   afterAll(() => {
@@ -49,35 +46,27 @@ describe('worker test', () => {
   });
 
   it('respond with "Hello Worker!"', async () => {
-    const fetchEventHandler = addEventListenerMock.mock.calls[0][1];
-    const mockFetchEvent = triggerFetchEvent(fetchEventHandler, 'http://localhost:8000/');
+    const response = await triggerFetchEvent('http://localhost:8000/');
 
-    await new Promise(process.nextTick);
-
-    // 检查 console 输出是否正确
     expect(console.log).toHaveBeenCalledWith('http://localhost:8000/');
 
-    // 检查 respondWith 行为是否正确
-    expect(mockFetchEvent.respondWith).toHaveBeenCalledWith(expect.any(Response));
+    expect(response).toBeInstanceOf(Response);
 
-    const response = mockFetchEvent.respondWith.mock.calls[0][0];
+    expect(response.status).toBe(200);
+
     const text = await response.text();
     expect(text).toBe('Hello Worker!');
   });
 
   it('respond with "Hello Test!"', async () => {
-    const fetchEventHandler = addEventListenerMock.mock.calls[0][1];
-    const mockFetchEvent = triggerFetchEvent(fetchEventHandler, 'http://localhost:8000/test');
+    const response = await triggerFetchEvent('http://localhost:8000/test');
 
-    await new Promise(process.nextTick);
-
-    // 检查 console 输出是否正确
     expect(console.log).toHaveBeenCalledWith('http://localhost:8000/test');
 
-    // 检查 respondWith 行为是否正确
-    expect(mockFetchEvent.respondWith).toHaveBeenCalledWith(expect.any(Response));
+    expect(response).toBeInstanceOf(Response);
 
-    const response = mockFetchEvent.respondWith.mock.calls[0][0];
+    expect(response.status).toBe(200);
+
     const text = await response.text();
     expect(text).toBe('Hello Test!');
   });
