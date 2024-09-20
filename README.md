@@ -4,6 +4,8 @@
 
 ## 组件
 
+使用提前准备好的三个工具函数，可以协助开发者使用 Jest 进行 Worker 单元测试：
+
 - `setupWorkerTest`：这个函数用于设置Worker测试环境。它会创建一些模拟对象和函数，以便在单元测试中模拟 Worker 的行为；
 - `clearWorkerTest`：这个函数用于清除 Worker 测试环境，保证测试环境干净；
 - `triggerFetchEvent`：这个函数用于触发 `fetch` 事件，模拟一个 `Request` 对象，然后测试 Worker 是如何处理这个请求的；
@@ -11,7 +13,7 @@
 
 ## 使用
 
-以下面的 Worker 代码为例，简单介绍如何使用 Jest 进行 JavaScript Worker 的单元测试：
+以下面的 Worker 代码为例，简单介绍如何编写 Worker 测试用例：
 
 ```js
 addEventListener("fetch", (event) => {
