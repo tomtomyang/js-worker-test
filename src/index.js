@@ -1,4 +1,4 @@
-const { Headers, Request, Response, crypto } = require('./runtime');
+const { Headers, Request, Response, crypto, fetch } = require('./runtime');
 
 const _ORIGIN = {}
 
@@ -15,6 +15,7 @@ function setupWorkerTest() {
   global.Response = Response;
   global.Headers = Headers;
   global.crypto = crypto;
+  global.fetch = fetch;
 
   return addEventListenerMock;
 }
@@ -29,6 +30,7 @@ function clearWorkerTest() {
   delete global.Response;
   delete global.Headers;
   delete global.crypto;
+  delete global.fetch;
 }
 
 function triggerFetchEvent(fetchEventHandler, url) {
