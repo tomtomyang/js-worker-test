@@ -3,5 +3,6 @@ module.exports = {
   Request: require('./request').Request,
   Response: require('./response').Response,
   fetch: require('./fetch').fetch,
-  crypto: require('./crypto').crypto
+  crypto: require('./crypto').crypto,
+  URL: require('./url').URL,
 };

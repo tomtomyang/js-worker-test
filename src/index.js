@@ -1,4 +1,4 @@
-const { Headers, Request, Response, crypto, fetch } = require('./runtime');
+const { Headers, Request, Response, crypto, fetch, URL } = require('./runtime');
 const { isPath, isUrl, isFunction, isRequest } = require('./util');
 
 function setupWorkerTest(worker) {
@@ -19,6 +19,7 @@ function setupWorkerTest(worker) {
   global.Headers = Headers;
   global.crypto = crypto;
   global.fetch = fetch;
+  global.URL = URL;
 
   require(worker);
 
