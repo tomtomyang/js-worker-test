@@ -1,11 +1,9 @@
-const path = require('path');
 const { Headers, Request, Response, crypto, fetch } = require('./runtime');
-
-// const _ORIGIN = {}
+const { isPath, isUrl, isFunction, isRequest } = require('./util');
 
 function setupWorkerTest(worker) {
-  if (!worker) {
-    throw new Error('worker is required');
+  if (!isPath(worker)) {
+    throw new Error('worker format is not valid');
   }
 
   global.origin = global;
@@ -34,11 +32,26 @@ function clearWorkerTest() {
   global = global.origin;
 }
 
-async function triggerFetchEvent(url) {
+async function triggerFetchEvent(request) {
+  if (!isUrl(request) && !isRequest(request)) {
+    throw new Error('request format is not valid');
+  }
+
+  if (!isFunction(global.fetchEventHandler)) {
+    throw new Error('fetchEventHandler is not defined');
+  }
+
   const fetchEventMock = {
-    request: new Request(url),
+    passThroughOnException: jest.fn(),
+    waitUntil: jest.fn(() => Promise.resolve()),
     respondWith: jest.fn((response) => Promise.resolve(response)),
   };
+
+  if (isUrl(request)) {
+    fetchEventMock.request = new Request(request);
+  } else {
+    fetchEventMock.request = request;
+  }
 
   // 触发 fetch 事件处理函数
   await global.fetchEventHandler(fetchEventMock);
