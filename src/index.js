@@ -1,5 +1,5 @@
-const { Headers, Request, Response, crypto, fetch, URL } = require('./runtime');
-const { isPath, isUrl, isFunction, isRequest } = require('./util');
+const WorkerRuntime = require('./runtime');
+const { isPath, isUrl, isFunction, isRequest } = require('./helper/util');
 
 function setupWorkerTest(worker) {
   if (!isPath(worker)) {
@@ -11,15 +11,10 @@ function setupWorkerTest(worker) {
   const addEventListenerMock = jest.fn();
   global.addEventListener = addEventListenerMock;
 
-  global.console = { log: jest.fn() };
+  const consoleMock = { log: jest.fn() };
+  global.console = consoleMock;
 
-  // 补充 Runtime API
-  global.Request = Request;
-  global.Response = Response;
-  global.Headers = Headers;
-  global.crypto = crypto;
-  global.fetch = fetch;
-  global.URL = URL;
+  Object.assign(global, WorkerRuntime);
 
   require(worker);
 
