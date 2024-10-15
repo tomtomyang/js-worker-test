@@ -4,7 +4,7 @@ const { setupWorkerTest, clearWorkerTest, triggerFetchEvent } = require('../src'
 
 describe('worker test', () => {
   beforeAll(() => {
-    setupWorkerTest(path.resolve(__dirname, './worker.js'));
+    setupWorkerTest(path.resolve(__dirname, './base.js'));
   });
 
   afterAll(() => {

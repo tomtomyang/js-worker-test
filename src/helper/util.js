@@ -1,4 +1,4 @@
-const { Request } = require('./runtime');
+const { Request } = require('../runtime/standards');
 
 function isObject(value) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
