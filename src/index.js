@@ -1,4 +1,4 @@
-const { WorkerSandbox } = require('js-worker-sandbox');
+const { WorkerVM } = require('js-worker-sandbox');
 const { isPath, isUrl, isFunction, isRequest } = require('./util');
 
 function setupWorkerTest(worker) {
@@ -6,10 +6,10 @@ function setupWorkerTest(worker) {
     throw new Error('worker format is not valid');
   }
 
-  const ws = new WorkerSandbox();
+  const vm = new WorkerVM();
 
   global.origin = global;
-  Object.assign(global, ws.context);
+  Object.assign(global, vm.context);
 
   const addEventListenerMock = jest.fn();
   global.addEventListener = addEventListenerMock;
